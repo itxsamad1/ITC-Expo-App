@@ -3,39 +3,49 @@
     "name": "ITC-Expo-App",
     "slug": "ITC-Expo-App",
     "version": "1.0.0",
-
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-
     "experiments": {
       "tsconfigPaths": true
     },
-
     "scheme": "itc-expo-app",
     "plugins": [
       "expo-router"
     ],
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.intelikimu.ITCExpoApp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.intelikimu.ITCExpoApp"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "58747fae-1064-4740-9bde-c22983536a4b"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/58747fae-1064-4740-9bde-c22983536a4b"
     }
   }
 }
