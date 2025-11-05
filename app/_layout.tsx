@@ -16,6 +16,7 @@ export default function RootLayout() {
           <Stack.Screen name="events" />
           <Stack.Screen name="resources" />
           <Stack.Screen name="settings" />
+          <Stack.Screen name="sign-up" />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>

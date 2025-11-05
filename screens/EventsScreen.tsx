@@ -56,7 +56,15 @@ export const EventsScreen: React.FC = () => {
           elevation: 2,
         }}
       >
-        <View style={{ width: 48 }} />
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="w-10 h-10 items-center justify-center rounded-full"
+          style={{
+            backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+          }}
+        >
+          <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
+        </TouchableOpacity>
         <Text className={`text-xl font-bold flex-1 text-center ${isDark ? 'text-white' : 'text-header-text'}`}>
           Events
         </Text>

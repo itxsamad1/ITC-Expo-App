@@ -37,10 +37,14 @@ export const ProfileScreen: React.FC = () => {
           style: 'destructive',
           onPress: async () => {
             try {
+              // Clear authentication state
               await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
+              // Navigate to root which will show sign-in screen
+              // Use replace to prevent going back to profile and reset navigation stack
               router.replace('/');
             } catch (error) {
               console.error('Error during logout:', error);
+              Alert.alert('Error', 'Failed to logout. Please try again.');
             }
           },
         },
@@ -56,10 +60,12 @@ export const ProfileScreen: React.FC = () => {
         end={{ x: 1, y: 1 }}
         style={{
           width: '100%',
-          height: 208,
+          paddingTop: 48,
+          paddingBottom: 24,
+          paddingHorizontal: 24,
         }}
       >
-        <View className="flex-row items-center justify-between px-6 pt-12 pb-4">
+        <View className="flex-row items-center justify-between">
           <TouchableOpacity
             onPress={() => router.back()}
             className="w-10 h-10 items-center justify-center rounded-full"
@@ -77,12 +83,17 @@ export const ProfileScreen: React.FC = () => {
         </View>
       </LinearGradient>
 
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <View className="items-center -mt-20 px-6">
-          <View style={{ position: 'relative' }}>
+      <ScrollView 
+        style={{ flex: 1 }} 
+        contentContainerStyle={{ paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Profile Section */}
+        <View style={{ alignItems: 'center', paddingTop: 32, paddingBottom: 32, paddingHorizontal: 24 }}>
+          <View style={{ position: 'relative', marginBottom: 16 }}>
             <Image
               source={{
-                uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces',
+                uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDt8oNhB0PWzIpTHhAe14QR7wLdnPMDYipV4plQjUO7tXbiqniy-GiQ8ZQxYFUG-Rdt3HA0L08llpySbOupbxuvRi5Z0NPVQSO0kZl3tQehpXAAY4jVQk6ZrqZFHGCvFbgRVLnKAKKQ59oCt882N5MogCiKqb7OTsoTQ3jmhChCl2P8icATiJjfUeBnuKrXxo8h44dJZZ7U5WRXMHUCVgduonyxKkoENgSyhmjIxQgszImAKXIZcFiJpQ3m-ZsV9wvHcjJUY5okIKo',
               }}
               style={{
                 width: 128,
@@ -110,15 +121,16 @@ export const ProfileScreen: React.FC = () => {
               <Ionicons name="create-outline" size={16} color="#ffffff" />
             </TouchableOpacity>
           </View>
-          <Text className={`text-2xl font-bold mt-4 ${isDark ? 'text-white' : 'text-navy'}`}>
+          <Text className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-navy'}`} style={{ marginBottom: 8 }}>
             Abdul Samad
           </Text>
-          <Text className={`text-base mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+          <Text className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Software Engineer, seeking opportunities
           </Text>
         </View>
 
-        <View className="px-6 mt-8 pb-8">
+        {/* Menu Items Section */}
+        <View style={{ paddingHorizontal: 24, paddingTop: 24 }}>
           <View style={{ gap: 12 }}>
             {menuItems.map((item) => (
               <TouchableOpacity
@@ -166,7 +178,7 @@ export const ProfileScreen: React.FC = () => {
               </TouchableOpacity>
             ))}
 
-            <View style={{ height: 1, marginVertical: 16, backgroundColor: isDark ? 'rgba(55, 65, 81, 0.5)' : '#E5E7EB' }} />
+            <View style={{ height: 1, marginTop: 24, marginBottom: 24, backgroundColor: isDark ? 'rgba(55, 65, 81, 0.5)' : '#E5E7EB' }} />
 
             <TouchableOpacity
               onPress={handleLogout}
@@ -176,6 +188,11 @@ export const ProfileScreen: React.FC = () => {
                 padding: 16,
                 borderRadius: 16,
                 backgroundColor: isDark ? '#0a2e46' : '#FFFFFF',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.05,
+                shadowRadius: 4,
+                elevation: 2,
               }}
               activeOpacity={0.8}
             >
