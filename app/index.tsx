@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter, useFocusEffect } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SplashScreen } from '../screens/SplashScreen';
@@ -9,6 +9,9 @@ import { useCallback } from 'react';
 
 const ONBOARDING_STORAGE_KEY = '@itc_app:onboarding_state';
 const AUTH_STORAGE_KEY = '@itc_app:auth_state';
+
+// Module-level variable to track if splash has been shown in this app session
+let hasShownSplashInSession = false;
 
 export default function Index() {
   const router = useRouter();
@@ -48,32 +51,20 @@ export default function Index() {
   }, [router]);
 
   useEffect(() => {
-    // Check if this is first load by checking if onboarding exists
-    // If onboarding exists, skip splash and load immediately
-    // If not, show splash for 5 seconds
+    // Show splash screen only on first app launch in this session
+    // Skip splash on subsequent navigations (like after logout)
     let timer: NodeJS.Timeout;
 
-    const checkAndLoad = async () => {
-      try {
-        const onboarding = await AsyncStorage.getItem(ONBOARDING_STORAGE_KEY);
-        if (onboarding === 'true') {
-          // User has seen onboarding before, skip splash
-          loadAppState(true);
-        } else {
-          // First time, show splash for 5 seconds
-          timer = setTimeout(() => {
-            loadAppState(true);
-          }, 5000);
-        }
-      } catch (error) {
-        // On error, show splash anyway
-        timer = setTimeout(() => {
-          loadAppState(true);
-        }, 5000);
-      }
-    };
-
-    checkAndLoad();
+    if (!hasShownSplashInSession) {
+      // First time in this session - show splash for 5 seconds
+      hasShownSplashInSession = true;
+      timer = setTimeout(() => {
+        loadAppState(true);
+      }, 5000);
+    } else {
+      // Already shown splash in this session (e.g., after logout) - skip splash
+      loadAppState(true);
+    }
 
     return () => {
       if (timer) {
