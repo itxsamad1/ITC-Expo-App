@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useTheme } from '../src/contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
 interface OnboardingScreenProps {
   onGetStarted: () => void;
@@ -10,18 +11,36 @@ interface OnboardingScreenProps {
 const onboardingData = [
   {
     title: 'Explore Careers',
-    description: 'Discover job opportunities worldwide that match your skills and ambitions.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQCU6ee20yxaVsrerNeH9_6SVR5j0XQuIUnolRfcG2VIU2wrqNA_KG3K9w0hHxuIpM1-h_tytzki99BRS77OTiLqwPtc1LLdg9vvGPW1jSc2AtDkmWMQg7a3iqrL0rUPtofD_VTFOHirb-8S1EYOUZM2oeRSGetPhjIrJ9mhl6C7NMt3CrOu1Pdljway3kEkJcqksYkFvH1ACzc0EeiKIKtVTmc5AwC8TYRXT9ehJ05Nj4N4VekoN-aTzF3HkXc8xBFFVPykObWK4',
+    description: 'Discover job opportunities worldwide that match your skills and ambitions. Connect with top employers and find your dream job across international markets.',
+    icon: 'briefcase-outline' as const,
+    features: [
+      'Global job opportunities',
+      'Personalized job matching',
+      'Direct employer connections',
+      'Career growth resources'
+    ],
   },
   {
     title: 'Get Visa Guidance',
-    description: 'Access resources for navigating visa and immigration processes with confidence.',
-    image: 'https://storage.googleapis.com/pai-images/ef1e469532584d4ab2cc923ed1aa5e40.png',
+    description: 'Access comprehensive resources for navigating visa and immigration processes with confidence. Get expert support for your international career journey.',
+    icon: 'airplane-outline' as const,
+    features: [
+      'Visa application support',
+      'Immigration documentation',
+      'Legal guidance resources',
+      'Country-specific information'
+    ],
   },
   {
     title: 'Grow Internationally',
-    description: 'Utilize language resources and professional development tools to thrive.',
-    image: 'https://storage.googleapis.com/pai-images/93ef3d39578044709d21abed9f71c4c9.png',
+    description: 'Utilize language resources and professional development tools to thrive in your new environment. Build skills that matter globally.',
+    icon: 'globe-outline' as const,
+    features: [
+      'Language learning tools',
+      'Cultural integration guides',
+      'Professional networking',
+      'Skill development programs'
+    ],
   },
 ];
 
@@ -44,13 +63,30 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onGetStarted
       >
         {onboardingData.map((item, index) => (
           <View key={index} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, paddingVertical: 48, minWidth: '100%' }}>
-            <View style={{ width: '100%', maxWidth: 384, marginBottom: 32, aspectRatio: 1 }}>
-              <Image
-                source={{ uri: item.image }}
-                style={{ width: '100%', height: '100%' }}
-                resizeMode="contain"
-              />
+            {/* Icon Section */}
+            <View style={{ marginBottom: 40, alignItems: 'center' }}>
+              <LinearGradient
+                colors={['#00C6A1', '#052639']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 60,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  shadowColor: '#00C6A1',
+                  shadowOffset: { width: 0, height: 8 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 16,
+                  elevation: 12,
+                }}
+              >
+                <Ionicons name={item.icon} size={56} color="#ffffff" />
+              </LinearGradient>
             </View>
+
+            {/* Content Section */}
             <View className="px-4 w-full">
               <Text
                 className={`text-3xl font-bold leading-tight text-center mb-4 ${
@@ -61,12 +97,40 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onGetStarted
                 {item.title}
               </Text>
               <Text
-                className={`text-base leading-6 max-w-sm mx-auto text-center ${
+                className={`text-base leading-6 max-w-md mx-auto text-center mb-8 ${
                   isDark ? 'text-gray-400' : 'text-gray-600'
                 }`}
               >
                 {item.description}
               </Text>
+
+              {/* Features List */}
+              <View style={{ maxWidth: 320, marginHorizontal: 'auto', gap: 12 }}>
+                {item.features.map((feature, featureIndex) => (
+                  <View key={featureIndex} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: 12,
+                        backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: 12,
+                      }}
+                    >
+                      <Ionicons name="checkmark" size={16} color="#00C6A1" />
+                    </View>
+                    <Text
+                      className={`text-sm flex-1 ${
+                        isDark ? 'text-gray-300' : 'text-gray-700'
+                      }`}
+                    >
+                      {feature}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
         ))}

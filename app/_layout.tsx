@@ -15,6 +15,7 @@ export default function RootLayout() {
           <Stack.Screen name="job-details/[id]" />
           <Stack.Screen name="events" />
           <Stack.Screen name="resources" />
+          <Stack.Screen name="settings" />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>

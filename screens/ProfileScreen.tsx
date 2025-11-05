@@ -1,20 +1,52 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../src/contexts/ThemeContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const menuItems = [
-  { id: 1, title: 'My Applications', icon: 'send-outline', badge: '3' },
-  { id: 2, title: 'Saved Jobs', icon: 'bookmark-outline' },
-  { id: 3, title: 'Settings', icon: 'settings-outline' },
+  { id: 1, title: 'My Applications', icon: 'send-outline', badge: '3', route: '/(tabs)/jobs' },
+  { id: 2, title: 'Saved Jobs', icon: 'bookmark-outline', route: '/(tabs)/jobs' },
+  { id: 3, title: 'Settings', icon: 'settings-outline', route: '/settings' },
 ];
+
+const AUTH_STORAGE_KEY = '@itc_app:auth_state';
 
 export const ProfileScreen: React.FC = () => {
   const router = useRouter();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+
+  const handleMenuPress = (route: string) => {
+    router.push(route as never);
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
+              router.replace('/');
+            } catch (error) {
+              console.error('Error during logout:', error);
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-background-light'}`}>
@@ -50,7 +82,7 @@ export const ProfileScreen: React.FC = () => {
           <View style={{ position: 'relative' }}>
             <Image
               source={{
-                uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAZG5zZ9o9ibHsvGbv2K-1b2THQN2g3A22xEl6STtNIxgCJCScU6twTfOXFFwKiyxD7D290EhfNSgtQbmHVekhn2XPos-Qabsz_copMSSfR35UO1Vft0GdEmTMMUHHRSYynSOG_1dkAFW-XO0xnL0A4ZkBPYHEu0zTB7PltHy6U-_KxsA_r4tOuyDGqAr1Zio5gVJ8t4qphK2jIkGVL9Szaq0b__QK1Wj7uCHsmpoOKO3kNbWqKqbw7JgK7GBLOuXRcu0lrqVBLq0Q',
+                uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces',
               }}
               style={{
                 width: 128,
@@ -79,7 +111,7 @@ export const ProfileScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
           <Text className={`text-2xl font-bold mt-4 ${isDark ? 'text-white' : 'text-navy'}`}>
-            Alina Meier
+            Abdul Samad
           </Text>
           <Text className={`text-base mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Software Engineer, seeking opportunities
@@ -91,6 +123,7 @@ export const ProfileScreen: React.FC = () => {
             {menuItems.map((item) => (
               <TouchableOpacity
                 key={item.id}
+                onPress={() => handleMenuPress(item.route)}
                 className={`flex-row items-center p-4 rounded-2xl ${
                   isDark ? 'bg-[#0a2e46]' : 'bg-white'
                 }`}
@@ -136,6 +169,7 @@ export const ProfileScreen: React.FC = () => {
             <View style={{ height: 1, marginVertical: 16, backgroundColor: isDark ? 'rgba(55, 65, 81, 0.5)' : '#E5E7EB' }} />
 
             <TouchableOpacity
+              onPress={handleLogout}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',

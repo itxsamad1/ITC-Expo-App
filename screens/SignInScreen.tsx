@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { 
   View, 
   Text, 
   TextInput, 
   TouchableOpacity, 
-  Image, 
   ScrollView, 
   KeyboardAvoidingView, 
-  Platform 
+  Platform,
+  Alert
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../src/contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -26,73 +26,101 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [emailFocused, setEmailFocused] = useState<boolean>(false);
   const [passwordFocused, setPasswordFocused] = useState<boolean>(false);
+  
+  // Use refs to prevent re-renders from causing focus loss
+  const emailInputRef = useRef<TextInput>(null);
+  const passwordInputRef = useRef<TextInput>(null);
 
-  // Debug component lifecycle
-  useEffect(() => {
-    console.log('✅ SignInScreen MOUNTED');
-    return () => {
-      console.log('❌ SignInScreen UNMOUNTED');
-    };
+  // Use useCallback to prevent unnecessary re-renders
+  const handleEmailChange = useCallback((text: string) => {
+    setEmail(text);
   }, []);
 
-  // Debug theme changes
-  useEffect(() => {
-    console.log('Theme changed to:', theme);
-  }, [theme]);
-
-  // Handlers with debugging
-  const handleEmailChange = (text: string) => {
-    console.log('Email changed:', text);
-    setEmail(text);
-  };
-
-  const handlePasswordChange = (text: string) => {
-    console.log('Password changed:', text);
+  const handlePasswordChange = useCallback((text: string) => {
     setPassword(text);
-  };
+  }, []);
 
-  const handleEmailFocus = () => {
-    console.log('Email focused');
+  const handleEmailFocus = useCallback(() => {
     setEmailFocused(true);
-  };
+  }, []);
 
-  const handleEmailBlur = () => {
-    console.log('Email blurred');
+  const handleEmailBlur = useCallback(() => {
     setEmailFocused(false);
-  };
+  }, []);
 
-  const handlePasswordFocus = () => {
-    console.log('Password focused');
+  const handlePasswordFocus = useCallback(() => {
     setPasswordFocused(true);
-  };
+  }, []);
 
-  const handlePasswordBlur = () => {
-    console.log('Password blurred');
+  const handlePasswordBlur = useCallback(() => {
     setPasswordFocused(false);
-  };
+  }, []);
 
-  const handleSignIn = () => {
-    console.log('=== SIGN IN PRESSED ===');
-    console.log('Email:', email);
-    console.log('Password length:', password.length);
-    console.log('Calling onSignIn callback');
-    onSignIn(); // Calling onSignIn directly (no validation for testing)
-  };
+  const handleSignIn = useCallback(() => {
+    // Validate credentials
+    const validEmail = 'user@gmail.com';
+    const validPassword = '12345678';
+    
+    if (email.trim() === validEmail && password === validPassword) {
+      onSignIn();
+    } else {
+      Alert.alert('Error', 'Invalid email or password. Please try again.');
+    }
+  }, [email, password, onSignIn]);
+
+  // Memoize input container styles to prevent re-renders
+  const emailContainerStyle = useMemo(() => ({
+    borderRadius: 12,
+    height: 56,
+    paddingHorizontal: 16,
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    borderWidth: 1,
+    borderColor: emailFocused ? '#00C6A1' : (isDark ? '#374151' : '#E5E7EB'),
+    backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
+    shadowColor: emailFocused ? '#00C6A1' : 'transparent',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: emailFocused ? 0.1 : 0,
+    shadowRadius: 4,
+    elevation: emailFocused ? 2 : 0,
+  }), [emailFocused, isDark]);
+
+  const passwordContainerStyle = useMemo(() => ({
+    borderRadius: 12,
+    height: 56,
+    paddingHorizontal: 16,
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    borderWidth: 1,
+    borderColor: passwordFocused ? '#00C6A1' : (isDark ? '#374151' : '#E5E7EB'),
+    backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
+    shadowColor: passwordFocused ? '#00C6A1' : 'transparent',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: passwordFocused ? 0.1 : 0,
+    shadowRadius: 4,
+    elevation: passwordFocused ? 2 : 0,
+  }), [passwordFocused, isDark]);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <View
       style={{
         flex: 1,
         backgroundColor: isDark ? '#052639' : '#FFFFFF',
       }}
     >
-      <ScrollView
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
-        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingVertical: 20 }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+          keyboardDismissMode="on-drag"
+          nestedScrollEnabled={true}
+        >
         <View style={{ width: '100%', maxWidth: 448, marginHorizontal: 'auto', paddingHorizontal: 24, paddingVertical: 32 }}>
           {/* Logo */}
           <View style={{ alignItems: 'center', marginBottom: 40 }}>
@@ -154,42 +182,28 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
             >
               Email Address
             </Text>
-            <View
-              style={{
-                borderRadius: 12,
-                height: 56,
-                paddingHorizontal: 16,
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1,
-                borderColor: emailFocused
-                  ? '#00C6A1'
-                  : isDark
-                  ? '#374151'
-                  : '#E5E7EB',
-                backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
-                shadowColor: emailFocused ? '#00C6A1' : 'transparent',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: emailFocused ? 0.1 : 0,
-                shadowRadius: 4,
-                elevation: emailFocused ? 2 : 0,
-              }}
-            >
+            <View style={emailContainerStyle}>
               <TextInput
+                ref={emailInputRef}
                 style={{
                   flex: 1,
                   fontSize: 16,
                   color: isDark ? '#FFFFFF' : '#111827',
+                  padding: 0,
                 }}
                 placeholder="Enter your email"
                 placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
                 value={email}
                 onChangeText={handleEmailChange}
-                onFocus={handleEmailFocus}
-                onBlur={handleEmailBlur}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
+                // onFocus={handleEmailFocus}
+                // onBlur={handleEmailBlur}
+                // keyboardType="email-address"
+                // autoCapitalize="none"
+                // autoCorrect={false}
+                // autoComplete="email"
+                // returnKeyType="next"
+                // blurOnSubmit={false}
+                // editable={true}
               />
             </View>
           </View>
@@ -206,42 +220,31 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
             >
               Password
             </Text>
-            <View
-              style={{
-                borderRadius: 12,
-                height: 56,
-                paddingHorizontal: 16,
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderWidth: 1,
-                borderColor: passwordFocused
-                  ? '#00C6A1'
-                  : isDark
-                  ? '#374151'
-                  : '#E5E7EB',
-                backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
-                shadowColor: passwordFocused ? '#00C6A1' : 'transparent',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: passwordFocused ? 0.1 : 0,
-                shadowRadius: 4,
-                elevation: passwordFocused ? 2 : 0,
-              }}
-            >
+            <View style={passwordContainerStyle}>
               <TextInput
+                ref={passwordInputRef}
                 style={{
                   flex: 1,
                   fontSize: 16,
                   color: isDark ? '#FFFFFF' : '#111827',
+                  padding: 0,
                 }}
                 placeholder="Enter your password"
                 placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
                 value={password}
                 onChangeText={handlePasswordChange}
-                onFocus={handlePasswordFocus}
-                onBlur={handlePasswordBlur}
+                // onFocus={handlePasswordFocus}
+                // onBlur={handlePasswordBlur}
                 secureTextEntry={!showPassword}
+                // autoComplete="password"
+                // returnKeyType="done"
+                // editable={true}
               />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ marginLeft: 12, padding: 8 }}>
+              <TouchableOpacity 
+                onPress={() => setShowPassword(!showPassword)} 
+                style={{ marginLeft: 12, padding: 8 }}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
                 <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={22} color={isDark ? '#9CA3AF' : '#6B7280'} />
               </TouchableOpacity>
             </View>
@@ -312,12 +315,9 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
               }}
               activeOpacity={0.7}
             >
-              <Image
-                source={{
-                  uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCTbQGBhG_e0EvuFZpwY5sQ31I8wE6xuv0jTO0smxm3g3K09UxvDACobf-AZdBh0MCz6R8KFvw1-bw6r0W_FSbIA0fWAEA9Q2S30AvlYlBkVsa7tFupRpRjGpkH5EgVBUJdZJqUFk457C88k8nqmVkp1Jc0p5Q8tENIy_kvQAJgUmekMyZlHlseXPbP6QrcBeJ_28eO2VW1hG5oHOtLyJK6bQ3pgZx-JRt4aE10CHhX_4BCZZh9t624fvHcjiPCouYVdhmFwLAXYys',
-                }}
-                style={{ width: 24, height: 24, marginRight: 12 }}
-              />
+              <View style={{ width: 24, height: 24, marginRight: 12, alignItems: 'center', justifyContent: 'center' }}>
+                <MaterialCommunityIcons name="google" size={24} color="#4285F4" />
+              </View>
               <Text
                 style={{
                   fontSize: 16,
@@ -348,12 +348,9 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
               }}
               activeOpacity={0.7}
             >
-              <Image
-                source={{
-                  uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCh3A59DSNin3VaNZDjdrtstxO_zV8W-NY9uyU3jM73OouZAo-mljKz7KWe2LPNjXhWx7MjYlQZHYrOzTd0y2HYEoxNyN13ypEDinIcr6s786j-COd3EuyK0LxSB6-U9AKA0ElbOFkeisNk40s20sN8ONIwUaZ5ah6oNCuUjmVT8wySbHwVRBKCFkLs8jTgN1QPoeZn3EXtiKhvHhV-7wSWPe7Cjh0DouchL5CAuucmRSO6Dz2YvAhPmSUl5k3n_8j8OHYLlU_fIqk',
-                }}
-                style={{ width: 24, height: 24, marginRight: 12 }}
-              />
+              <View style={{ width: 24, height: 24, marginRight: 12, alignItems: 'center', justifyContent: 'center' }}>
+                <MaterialCommunityIcons name="linkedin" size={24} color="#0077B5" />
+              </View>
               <Text
                 style={{
                   fontSize: 16,
@@ -376,7 +373,8 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
             </Text>
           </View>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
