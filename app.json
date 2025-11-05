@@ -12,7 +12,10 @@
       "tsconfigPaths": true
     },
 
-    "plugins": [],
+    "scheme": "itc-expo-app",
+    "plugins": [
+      "expo-router"
+    ],
 
     "orientation": "portrait",
     "icon": "./assets/icon.png",

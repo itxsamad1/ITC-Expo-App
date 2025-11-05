@@ -1,13 +1,6 @@
-import { ScreenContent } from 'components/ScreenContent';
-import { StatusBar } from 'expo-status-bar';
-
-import './global.css';
-
+// This file is not used with Expo Router
+// The entry point is now expo-router/entry as specified in package.json
+// All routing is handled in the app/ directory
 export default function App() {
-  return (
-    <>
-      <ScreenContent title="Home" path="App.tsx"></ScreenContent>
-      <StatusBar style="auto" />
-    </>
-  );
+  return null;
 }
