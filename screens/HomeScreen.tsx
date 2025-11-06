@@ -1,40 +1,18 @@
 import React from 'react';
 import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../src/contexts/ThemeContext';
+import { useLanguage } from '../src/contexts/LanguageContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export const HomeScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const { theme } = useTheme();
+  const { t, language } = useLanguage();
   const isDark = theme === 'dark';
   const insets = useSafeAreaInsets();
-
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: 'Global Tech Summit',
-      location: 'London, UK',
-      date: 'NOV 23',
-      icon: '🎉',
-    },
-    {
-      id: 2,
-      title: 'Networking Night',
-      location: 'Online Webinar',
-      date: 'DEC 05',
-      icon: '🌐',
-    },
-    {
-      id: 3,
-      title: 'Resume Workshop',
-      location: 'New York, USA',
-      date: 'DEC 12',
-      icon: '🎓',
-    },
-  ];
 
   return (
     <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-background-light'}`} style={{ paddingTop: insets.top }}>
@@ -52,15 +30,15 @@ export const HomeScreen: React.FC = () => {
               />
               <View>
                 <Text className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'} mb-0.5`}>
-                  Welcome back,
+                  {t('welcome_back')},
                 </Text>
                 <Text className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-navy'}`}>
-                  Hi Samad
+                  {t('hi')} Ahmed
                 </Text>
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Notifications' as never)}
+              onPress={() => router.push('/(tabs)/notifications')}
               className="w-10 h-10 items-center justify-center rounded-full"
               style={{
                 backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
@@ -88,10 +66,11 @@ export const HomeScreen: React.FC = () => {
               className={`flex-1 text-base ${
                 isDark ? 'text-white' : 'text-gray-900'
               }`}
-              placeholder="Search Jobs or Events…"
+              placeholder={t('search') + '...'}
               placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
             />
           </View>
+
         </View>
 
         {/* Quick Actions */}
@@ -102,13 +81,12 @@ export const HomeScreen: React.FC = () => {
             contentContainerStyle={{ paddingRight: 24 }}
           >
             {[
-              { title: 'Career Matching', icon: 'briefcase-outline', route: 'ExploreJobs' },
-              { title: 'Visa Support', icon: 'airplane-outline', route: 'Resources' },
-              { title: 'Events 2025', icon: 'calendar-outline', route: 'Events' },
+              { title: t('visa_support'), icon: 'airplane-outline', route: '/resources' },
+              { title: t('training'), icon: 'school-outline', route: '/training' },
             ].map((action, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate(action.route as never)}
+                onPress={() => router.push(action.route as any)}
                 className="mr-4"
                 activeOpacity={0.9}
               >
@@ -139,69 +117,15 @@ export const HomeScreen: React.FC = () => {
           </ScrollView>
         </View>
 
-        {/* Upcoming Events Section */}
+        {/* Upcoming Trainings Section */}
         <View className="px-6 pb-6">
           <View className="flex-row items-center justify-between mb-4">
             <Text className={`text-xl font-bold ${isDark ? 'text-white' : 'text-navy'}`}>
-              Upcoming Events
+              {t('upcoming_trainings')}
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Events' as never)}>
-              <Text className="text-primary text-sm font-semibold">See all</Text>
+            <TouchableOpacity onPress={() => router.push('/training')}>
+              <Text className="text-primary text-sm font-semibold">{t('see_all')}</Text>
             </TouchableOpacity>
-          </View>
-
-          <View style={{ gap: 12 }}>
-            {upcomingEvents.map((event) => (
-              <TouchableOpacity
-                key={event.id}
-                onPress={() => navigation.navigate('Events' as never)}
-                className={`rounded-2xl p-4 flex-row items-center ${
-                  isDark ? 'bg-[#0A2E44]' : 'bg-white'
-                }`}
-                activeOpacity={0.8}
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.08,
-                  shadowRadius: 8,
-                  elevation: 3,
-                }}
-              >
-                <View
-                  className="w-14 h-14 rounded-xl items-center justify-center mr-4"
-                  style={{
-                    backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
-                  }}
-                >
-                  <Ionicons name={event.icon === '🎉' ? 'sparkles-outline' : event.icon === '🌐' ? 'globe-outline' : 'school-outline'} size={22} color="#00C6A1" />
-                </View>
-                <View className="flex-1">
-                  <Text
-                    className={`text-base font-semibold mb-1 ${
-                      isDark ? 'text-white' : 'text-navy'
-                    }`}
-                  >
-                    {event.title}
-                  </Text>
-                  <Text
-                    className={`text-sm ${
-                      isDark ? 'text-gray-400' : 'text-gray-600'
-                    }`}
-                  >
-                    {event.location}
-                  </Text>
-                </View>
-                <View className="items-end">
-                  <Text
-                    className={`text-xs font-semibold ${
-                      isDark ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    {event.date}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
           </View>
         </View>
       </ScrollView>

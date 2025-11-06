@@ -12,6 +12,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../src/contexts/ThemeContext';
+import { useLanguage } from '../src/contexts/LanguageContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface SignInScreenProps {
@@ -21,6 +22,7 @@ interface SignInScreenProps {
 
 export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const isDark = theme === 'dark';
   const insets = useSafeAreaInsets();
   const [email, setEmail] = useState<string>('');
@@ -161,7 +163,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
               color: isDark ? '#FFFFFF' : '#052639',
             }}
           >
-            Welcome Back
+            {t('welcome_back')}
           </Text>
           <Text
             style={{
@@ -171,7 +173,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
               color: isDark ? '#9CA3AF' : '#4B5563',
             }}
           >
-            Sign in to continue your journey
+            {t('sign_in')} {t('continue') || 'to continue your journey'}
           </Text>
 
           {/* Email Input */}
@@ -184,7 +186,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
                 color: isDark ? '#D1D5DB' : '#374151',
               }}
             >
-              Email Address
+              {t('email')}
             </Text>
             <View style={emailContainerStyle}>
               <TextInput
@@ -195,7 +197,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
                   color: isDark ? '#FFFFFF' : '#111827',
                   padding: 0,
                 }}
-                placeholder="Enter your email"
+                placeholder={t('email')}
                 placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
                 value={email}
                 onChangeText={handleEmailChange}
@@ -222,7 +224,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
                 color: isDark ? '#D1D5DB' : '#374151',
               }}
             >
-              Password
+              {t('password')}
             </Text>
             <View style={passwordContainerStyle}>
               <TextInput
@@ -233,7 +235,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
                   color: isDark ? '#FFFFFF' : '#111827',
                   padding: 0,
                 }}
-                placeholder="Enter your password"
+                placeholder={t('password')}
                 placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
                 value={password}
                 onChangeText={handlePasswordChange}
@@ -257,7 +259,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
           {/* Forgot Password */}
           <TouchableOpacity style={{ alignItems: 'flex-end', marginBottom: 24 }}>
             <Text style={{ color: '#00C6A1', fontSize: 14, fontWeight: '600' }}>
-              Forgot password?
+              {t('forgot_password')}
             </Text>
           </TouchableOpacity>
 
@@ -284,7 +286,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
               }}
             >
               <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>
-                Sign In
+                {t('sign_in')}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -329,7 +331,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
                   color: isDark ? '#FFFFFF' : '#111827',
                 }}
               >
-                Sign in with Google
+                {t('sign_in_with_google')}
               </Text>
             </TouchableOpacity>
 
@@ -362,7 +364,7 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
                   color: isDark ? '#FFFFFF' : '#111827',
                 }}
               >
-                Sign in with LinkedIn
+                {t('sign_in_with_linkedin')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -370,9 +372,9 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
           {/* Sign Up Link */}
           <View style={{ alignItems: 'center', marginTop: 32 }}>
             <Text style={{ fontSize: 14, color: isDark ? '#9CA3AF' : '#4B5563' }}>
-              Don't have an account?{' '}
+              {t('dont_have_account')}{' '}
               <Text style={{ fontWeight: '600', color: '#00C6A1' }} onPress={onSignUp}>
-                Sign up
+                {t('sign_up')}
               </Text>
             </Text>
           </View>

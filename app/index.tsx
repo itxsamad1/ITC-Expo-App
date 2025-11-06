@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useFocusEffect } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SplashScreen } from '../screens/SplashScreen';
 import { OnboardingScreen } from '../screens/OnboardingScreen';
-import { SignInScreen } from '../screens/SignInScreen';
-import { SignUpScreen } from '../screens/SignUpScreen';
+import { AuthScreen } from '../screens/AuthScreen';
 import { useCallback } from 'react';
 
 const ONBOARDING_STORAGE_KEY = '@itc_app:onboarding_state';
@@ -18,7 +17,6 @@ export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
 
   const loadAppState = useCallback(async (skipSplash = false) => {
     try {
@@ -32,16 +30,11 @@ export default function Index() {
 
       setHasSeenOnboarding(hasOnboarding);
       setIsAuthenticated(isAuth);
+      setIsLoading(false);
 
-      if (!hasOnboarding) {
-        // Will show onboarding
-        setIsLoading(false);
-      } else if (!isAuth) {
-        // Will show sign-in
-        setIsLoading(false);
-      } else {
-        // Navigate to home
-        setIsLoading(false);
+      // Only navigate to tabs if authenticated
+      // Otherwise, let the render logic show the appropriate screen
+      if (hasOnboarding && isAuth) {
         router.replace('/(tabs)');
       }
     } catch (error) {
@@ -77,10 +70,9 @@ export default function Index() {
   // This ensures logout properly resets the state without showing splash
   useFocusEffect(
     useCallback(() => {
-      // Only reload if we're not in initial loading state
-      // This prevents conflicts with the splash screen timer
+      // Reload app state when screen comes into focus
+      // This is important for logout to work properly
       if (!isLoading) {
-        // Skip splash on focus reload (e.g., after logout)
         loadAppState(true);
       }
     }, [isLoading, loadAppState])
@@ -121,14 +113,6 @@ export default function Index() {
     }
   };
 
-  const handleShowSignUp = () => {
-    setShowSignUp(true);
-  };
-
-  const handleShowSignIn = () => {
-    setShowSignUp(false);
-  };
-
   if (isLoading) {
     return <SplashScreen onFinish={handleSplashFinish} />;
   }
@@ -138,10 +122,7 @@ export default function Index() {
   }
 
   if (!isAuthenticated) {
-    if (showSignUp) {
-      return <SignUpScreen onSignUp={handleSignUp} onSignIn={handleShowSignIn} />;
-    }
-    return <SignInScreen onSignIn={handleSignIn} onSignUp={handleShowSignUp} />;
+    return <AuthScreen onSignIn={handleSignIn} onSignUp={handleSignUp} />;
   }
 
   return null; // Will redirect to tabs

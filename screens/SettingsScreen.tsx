@@ -4,10 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../src/contexts/ThemeContext';
+import { useLanguage } from '../src/contexts/LanguageContext';
 
 export const SettingsScreen: React.FC = () => {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
+  const { t, language, setLanguage } = useLanguage();
   const isDark = theme === 'dark';
   const insets = useSafeAreaInsets();
 
@@ -40,7 +42,7 @@ export const SettingsScreen: React.FC = () => {
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
         </TouchableOpacity>
         <Text className={`flex-1 text-center text-xl font-bold ${isDark ? 'text-white' : 'text-navy'}`}>
-          Settings
+          {t('settings')}
         </Text>
         <View style={{ width: 40 }} />
       </View>
@@ -60,7 +62,7 @@ export const SettingsScreen: React.FC = () => {
           }}
         >
           <Text className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-navy'}`}>
-            Appearance
+            {t('appearance')}
           </Text>
           
           <TouchableOpacity
@@ -93,10 +95,10 @@ export const SettingsScreen: React.FC = () => {
               </View>
               <View style={{ flex: 1 }}>
                 <Text className={`text-base font-semibold ${isDark ? 'text-white' : 'text-navy'}`}>
-                  Dark Mode
+                  {t('dark_mode')}
                 </Text>
                 <Text className={`text-sm mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {isDark ? 'Dark mode is enabled' : 'Light mode is enabled'}
+                  {isDark ? t('dark_mode_enabled') : t('light_mode_enabled')}
                 </Text>
               </View>
             </View>
@@ -107,6 +109,115 @@ export const SettingsScreen: React.FC = () => {
               thumbColor="#FFFFFF"
               ios_backgroundColor="#D1D5DB"
             />
+          </TouchableOpacity>
+        </View>
+
+        {/* Language Selection Section */}
+        <View
+          className={`rounded-2xl p-5 mb-6 ${
+            isDark ? 'bg-[#0A2F47]' : 'bg-white'
+          }`}
+          style={{
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.05,
+            shadowRadius: 4,
+            elevation: 2,
+          }}
+        >
+          <Text className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-navy'}`}>
+            {t('select_language')}
+          </Text>
+          
+          <TouchableOpacity
+            onPress={() => setLanguage('en')}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingVertical: 12,
+              paddingHorizontal: 4,
+              borderRadius: 8,
+              marginBottom: 8,
+              backgroundColor: language === 'en' ? (isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)') : 'transparent',
+            }}
+            activeOpacity={0.7}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+              <View
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 16,
+                  backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
+                }}
+              >
+                <Ionicons 
+                  name="language-outline" 
+                  size={22} 
+                  color="#00C6A1" 
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text className={`text-base font-semibold ${isDark ? 'text-white' : 'text-navy'}`}>
+                  {t('english')}
+                </Text>
+                <Text className={`text-sm mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  English
+                </Text>
+              </View>
+            </View>
+            {language === 'en' && (
+              <Ionicons name="checkmark-circle" size={24} color="#00C6A1" />
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => setLanguage('ur')}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingVertical: 12,
+              paddingHorizontal: 4,
+              borderRadius: 8,
+              backgroundColor: language === 'ur' ? (isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)') : 'transparent',
+            }}
+            activeOpacity={0.7}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+              <View
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 16,
+                  backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
+                }}
+              >
+                <Ionicons 
+                  name="language-outline" 
+                  size={22} 
+                  color="#00C6A1" 
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text className={`text-base font-semibold ${isDark ? 'text-white' : 'text-navy'}`}>
+                  {t('urdu')}
+                </Text>
+                <Text className={`text-sm mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  اردو
+                </Text>
+              </View>
+            </View>
+            {language === 'ur' && (
+              <Ionicons name="checkmark-circle" size={24} color="#00C6A1" />
+            )}
           </TouchableOpacity>
         </View>
 
@@ -124,7 +235,7 @@ export const SettingsScreen: React.FC = () => {
           }}
         >
           <Text className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-navy'}`}>
-            Account
+            {t('account')}
           </Text>
           
           <TouchableOpacity
@@ -144,7 +255,7 @@ export const SettingsScreen: React.FC = () => {
               style={{ marginRight: 16 }}
             />
             <Text className={`flex-1 text-base ${isDark ? 'text-white' : 'text-navy'}`}>
-              Edit Profile
+              {t('edit_profile')}
             </Text>
             <Ionicons name="chevron-forward" size={20} color={isDark ? '#9CA3AF' : '#9CA3AF'} />
           </TouchableOpacity>
@@ -164,7 +275,7 @@ export const SettingsScreen: React.FC = () => {
               style={{ marginRight: 16 }}
             />
             <Text className={`flex-1 text-base ${isDark ? 'text-white' : 'text-navy'}`}>
-              Change Password
+              {t('change_password')}
             </Text>
             <Ionicons name="chevron-forward" size={20} color={isDark ? '#9CA3AF' : '#9CA3AF'} />
           </TouchableOpacity>
@@ -184,7 +295,7 @@ export const SettingsScreen: React.FC = () => {
           }}
         >
           <Text className={`text-lg font-bold mb-4 ${isDark ? 'text-white' : 'text-navy'}`}>
-            About
+            {t('about')}
           </Text>
           
           <TouchableOpacity
@@ -204,7 +315,7 @@ export const SettingsScreen: React.FC = () => {
               style={{ marginRight: 16 }}
             />
             <Text className={`flex-1 text-base ${isDark ? 'text-white' : 'text-navy'}`}>
-              App Version
+              {t('app_version')}
             </Text>
             <Text className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               1.0.0
@@ -226,7 +337,7 @@ export const SettingsScreen: React.FC = () => {
               style={{ marginRight: 16 }}
             />
             <Text className={`flex-1 text-base ${isDark ? 'text-white' : 'text-navy'}`}>
-              Help & Support
+              {t('help_support')}
             </Text>
             <Ionicons name="chevron-forward" size={20} color={isDark ? '#9CA3AF' : '#9CA3AF'} />
           </TouchableOpacity>

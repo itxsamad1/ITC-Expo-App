@@ -4,45 +4,87 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../src/contexts/ThemeContext';
+import { useLanguage } from '../src/contexts/LanguageContext';
 
 const notifications = [
   {
     id: 1,
-    title: 'New Job Match',
-    message: "A new role matching your 'Software Engineer' profile has been posted.",
-    time: '2h ago',
+    title: 'New Driver Job Available',
+    message: 'Truck Driver position available in Dubai, UAE. Apply now to secure your spot!',
+    time: '1h ago',
     isRead: false,
-    icon: '💼',
+    icon: '🚛',
+    type: 'driver',
   },
   {
     id: 2,
-    title: 'Resource Update',
-    message: "Your language resource 'Advanced English Grammar' has been updated.",
-    time: 'Yesterday',
+    title: 'Security Guard Opportunity',
+    message: 'Security Guard position in Doha, Qatar. Competitive salary and benefits package.',
+    time: '3h ago',
     isRead: false,
-    icon: '📚',
+    icon: '🛡️',
+    type: 'security',
   },
   {
     id: 3,
-    title: 'Visa Update',
-    message: "There's an update on your visa application process.",
-    time: '2 days ago',
-    isRead: true,
-    icon: '✈️',
+    title: 'Car Driver Position',
+    message: 'Luxury Car Driver needed in Riyadh, Saudi Arabia. Premium transport services company.',
+    time: '5h ago',
+    isRead: false,
+    icon: '🚗',
+    type: 'driver',
   },
   {
     id: 4,
-    title: 'Profile View',
-    message: 'A recruiter from TechSolutions Inc. viewed your profile.',
+    title: 'Application Status Update',
+    message: 'Your application for Truck Driver at Global Logistics Ltd. is under review.',
+    time: 'Yesterday',
+    isRead: true,
+    icon: '📋',
+    type: 'driver',
+  },
+  {
+    id: 5,
+    title: 'Security Training Available',
+    message: 'New security guard training program starting next week. Register now!',
+    time: '2 days ago',
+    isRead: true,
+    icon: '🎓',
+    type: 'security',
+  },
+  {
+    id: 6,
+    title: 'Heavy Truck Driver Needed',
+    message: 'Heavy Truck Driver position in Abu Dhabi, UAE. Long-term contract available.',
+    time: '2 days ago',
+    isRead: true,
+    icon: '🚚',
+    type: 'driver',
+  },
+  {
+    id: 7,
+    title: 'Residential Security Position',
+    message: 'Residential Security Guard job in Manama, Bahrain. Immediate start available.',
     time: '3 days ago',
     isRead: true,
-    icon: '👁️',
+    icon: '🏠',
+    type: 'security',
+  },
+  {
+    id: 8,
+    title: 'Driving License Verification',
+    message: 'Please verify your driving license details for faster job application processing.',
+    time: '4 days ago',
+    isRead: true,
+    icon: '📄',
+    type: 'driver',
   },
 ];
 
 export const NotificationsScreen: React.FC = () => {
   const router = useRouter();
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const isDark = theme === 'dark';
   const insets = useSafeAreaInsets();
 
@@ -76,7 +118,7 @@ export const NotificationsScreen: React.FC = () => {
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
         </TouchableOpacity>
         <Text className={`flex-1 text-center text-xl font-bold ${isDark ? 'text-white' : 'text-navy'}`}>
-          Notifications
+          {t('notifications')}
         </Text>
         <View style={{ width: 40, height: 40 }} />
       </View>
@@ -125,10 +167,8 @@ export const NotificationsScreen: React.FC = () => {
                     backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
                   }}
                 >
-                  {notification.id === 1 && <Ionicons name="briefcase-outline" size={22} color="#00C6A1" />}
-                  {notification.id === 2 && <Ionicons name="book-outline" size={22} color="#00C6A1" />}
-                  {notification.id === 3 && <Ionicons name="airplane-outline" size={22} color="#00C6A1" />}
-                  {notification.id === 4 && <Ionicons name="eye-outline" size={22} color="#00C6A1" />}
+                  {notification.type === 'driver' && <Ionicons name="car-outline" size={22} color="#00C6A1" />}
+                  {notification.type === 'security' && <Ionicons name="shield-outline" size={22} color="#00C6A1" />}
                 </View>
               </View>
             </TouchableOpacity>

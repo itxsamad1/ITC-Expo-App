@@ -3,14 +3,15 @@ import { View, Text, ScrollView, Image, TouchableOpacity, Alert } from 'react-na
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../src/contexts/ThemeContext';
+import { useLanguage } from '../src/contexts/LanguageContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Menu items will be translated in the component
 const menuItems = [
-  { id: 1, title: 'My Applications', icon: 'send-outline', badge: '3', route: '/(tabs)/jobs' },
-  { id: 2, title: 'Saved Jobs', icon: 'bookmark-outline', route: '/(tabs)/jobs' },
-  { id: 3, title: 'Settings', icon: 'settings-outline', route: '/settings' },
+  { id: 1, titleKey: 'my_applications', icon: 'send-outline', badge: '3', route: '/(tabs)/jobs' },
+  { id: 2, titleKey: 'saved_jobs', icon: 'bookmark-outline', route: '/(tabs)/jobs' },
+  { id: 3, titleKey: 'settings', icon: 'settings-outline', route: '/settings' },
 ];
 
 const AUTH_STORAGE_KEY = '@itc_app:auth_state';
@@ -18,6 +19,7 @@ const AUTH_STORAGE_KEY = '@itc_app:auth_state';
 export const ProfileScreen: React.FC = () => {
   const router = useRouter();
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const isDark = theme === 'dark';
   const insets = useSafeAreaInsets();
 
@@ -27,22 +29,21 @@ export const ProfileScreen: React.FC = () => {
 
   const handleLogout = () => {
     Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
+      t('logout'),
+      t('logout') + '?',
       [
         {
-          text: 'Cancel',
+          text: t('cancel') || 'Cancel',
           style: 'cancel',
         },
         {
-          text: 'Logout',
+          text: t('logout'),
           style: 'destructive',
           onPress: async () => {
             try {
               // Clear authentication state
               await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
               // Navigate to root which will show sign-in screen
-              // Use replace to prevent going back to profile and reset navigation stack
               router.replace('/');
             } catch (error) {
               console.error('Error during logout:', error);
@@ -56,34 +57,48 @@ export const ProfileScreen: React.FC = () => {
 
   return (
     <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-background-light'}`} style={{ paddingTop: insets.top }}>
-      <LinearGradient
-        colors={['#00C6A1', '#052639']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+      {/* Header */}
+      <View
         style={{
-          width: '100%',
-          paddingTop: 48,
-          paddingBottom: 24,
+          flexDirection: 'row',
+          alignItems: 'center',
           paddingHorizontal: 24,
+          paddingVertical: 16,
+          borderBottomWidth: 1,
+          borderBottomColor: isDark ? 'rgba(255,255,255,0.1)' : '#E5E7EB',
+          backgroundColor: isDark ? '#052639' : '#FFFFFF',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 4,
+          elevation: 2,
         }}
       >
-        <View className="flex-row items-center justify-between">
-          <TouchableOpacity
-            onPress={() => router.back()}
-            className="w-10 h-10 items-center justify-center rounded-full"
-            style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
-          >
-            <Ionicons name="chevron-back" size={20} color="#ffffff" />
-          </TouchableOpacity>
-          <Text className="text-white text-lg font-semibold">Profile</Text>
-          <TouchableOpacity
-            className="w-10 h-10 items-center justify-center rounded-full"
-            style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
-          >
-            <Ionicons name="ellipsis-vertical" size={20} color="#ffffff" />
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="w-10 h-10 items-center justify-center rounded-full"
+          style={{
+            backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+          }}
+        >
+          <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
+        </TouchableOpacity>
+        <Text
+          className={`text-xl font-bold flex-1 text-center ${
+            isDark ? 'text-white' : 'text-header-text'
+          }`}
+        >
+          {t('profile')}
+        </Text>
+        <TouchableOpacity
+          className="w-10 h-10 items-center justify-center rounded-full"
+          style={{
+            backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+          }}
+        >
+          <Ionicons name="ellipsis-vertical" size={20} color={isDark ? '#fff' : '#111827'} />
+        </TouchableOpacity>
+      </View>
 
       <ScrollView 
         style={{ flex: 1 }} 
@@ -124,10 +139,10 @@ export const ProfileScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
           <Text className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-navy'}`} style={{ marginBottom: 8 }}>
-            Abdul Samad
+            Ahmed
           </Text>
           <Text className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Software Engineer, seeking opportunities
+            {t('driver')}
           </Text>
         </View>
 
@@ -164,7 +179,7 @@ export const ProfileScreen: React.FC = () => {
                   <Ionicons name={item.icon as any} size={22} color="#00C6A1" />
                 </View>
                 <Text className={`flex-1 text-base font-semibold ${isDark ? 'text-white' : 'text-navy'}`}>
-                  {item.title}
+                  {t(item.titleKey)}
                 </Text>
                 <View className="flex-row items-center">
                   {item.badge && (
@@ -208,7 +223,7 @@ export const ProfileScreen: React.FC = () => {
               }}>
                 <Ionicons name="log-out-outline" size={22} color="#EF4444" />
               </View>
-              <Text className="flex-1 text-base font-semibold text-red-500">Logout</Text>
+              <Text className="flex-1 text-base font-semibold text-red-500">{t('logout')}</Text>
               <Ionicons name="chevron-forward" size={20} color={isDark ? '#9CA3AF' : '#9CA3AF'} />
             </TouchableOpacity>
           </View>

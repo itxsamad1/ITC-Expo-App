@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../src/contexts/ThemeContext';
+import { useLanguage } from '../src/contexts/LanguageContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -47,9 +48,47 @@ const onboardingData = [
 
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onGetStarted }) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const isDark = theme === 'dark';
   const insets = useSafeAreaInsets();
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Translated onboarding data
+  const translatedOnboardingData = [
+    {
+      title: t('explore_careers'),
+      description: t('discover_job_opportunities'),
+      icon: 'briefcase-outline' as const,
+      features: [
+        t('global_job_opportunities') || 'Global job opportunities',
+        t('personalized_job_matching') || 'Personalized job matching',
+        t('direct_employer_connections') || 'Direct employer connections',
+        t('career_growth_resources') || 'Career growth resources'
+      ],
+    },
+    {
+      title: t('get_visa_guidance'),
+      description: t('access_visa_resources'),
+      icon: 'airplane-outline' as const,
+      features: [
+        t('visa_application_support') || 'Visa application support',
+        t('immigration_documentation') || 'Immigration documentation',
+        t('legal_guidance_resources') || 'Legal guidance resources',
+        t('country_specific_information') || 'Country-specific information'
+      ],
+    },
+    {
+      title: t('grow_internationally'),
+      description: t('utilize_resources'),
+      icon: 'globe-outline' as const,
+      features: [
+        t('language_learning_tools') || 'Language learning tools',
+        t('cultural_integration_guides') || 'Cultural integration guides',
+        t('professional_networking') || 'Professional networking',
+        t('skill_development_programs') || 'Skill development programs'
+      ],
+    },
+  ];
 
   return (
     <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-white'}`} style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
@@ -63,7 +102,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onGetStarted
         }}
         className="flex-1"
       >
-        {onboardingData.map((item, index) => (
+        {translatedOnboardingData.map((item, index) => (
           <View key={index} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, paddingVertical: 48, minWidth: '100%' }}>
             {/* Icon Section */}
             <View style={{ marginBottom: 40, alignItems: 'center' }}>
@@ -140,7 +179,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onGetStarted
 
       <View className="px-6 pb-8 pt-4">
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 32 }}>
-          {onboardingData.map((_, index) => (
+          {translatedOnboardingData.map((_, index) => (
             <View
               key={index}
               style={{
@@ -173,7 +212,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onGetStarted
             }}
           >
             <Text className="text-white text-base font-bold">
-              Get Started
+              {t('get_started')}
             </Text>
           </LinearGradient>
         </TouchableOpacity>

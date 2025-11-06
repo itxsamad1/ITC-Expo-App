@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { View, Text, Animated } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Animated, TouchableOpacity, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../src/contexts/ThemeContext';
-import Svg, { Path } from 'react-native-svg';
+import { useLanguage } from '../src/contexts/LanguageContext';
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -10,24 +10,33 @@ interface SplashScreenProps {
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   const { theme } = useTheme();
+  const { setLanguage } = useLanguage();
   const isDark = theme === 'dark';
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
+  const [showLanguageSelection, setShowLanguageSelection] = useState(false);
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 1000,
       useNativeDriver: true,
-    }).start();
+    }).start(() => {
+      // After fade animation completes, show language selection
+      setShowLanguageSelection(true);
+    });
+  }, [fadeAnim]);
 
-    const timer = setTimeout(() => {
+  const handleLanguageSelect = (lang: 'en' | 'ur') => {
+    setLanguage(lang);
+    setShowLanguageSelection(false);
+    // Wait a moment then proceed
+    setTimeout(() => {
       onFinish();
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [onFinish, fadeAnim]);
+    }, 300);
+  };
 
   return (
-    <View className={`flex-1 items-center justify-center ${isDark ? 'bg-app-navy' : 'bg-white'}`}>
+    <View className="flex-1 items-center justify-center bg-black">
       <Animated.View
         style={{
           opacity: fadeAnim,
@@ -42,43 +51,97 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
         }}
       >
         <View style={{ alignItems: 'center', justifyContent: 'center', gap: 24 }}>
-          <LinearGradient
-            colors={['#00C6A1', '#052639']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+          <View
             style={{
-              width: 96,
-              height: 96,
-              borderRadius: 9999,
+              width: 160,
+              height: 160,
               alignItems: 'center',
               justifyContent: 'center',
-              padding: 16,
-              shadowColor: '#00C6A1',
+              shadowColor: '#000',
               shadowOffset: { width: 0, height: 8 },
               shadowOpacity: 0.3,
               shadowRadius: 16,
               elevation: 12,
             }}
           >
-            <Svg width={64} height={64} viewBox="0 0 24 24">
-              <Path
-                d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 19.93C7.05 19.44 4 16.08 4 12C4 11.38 4.08 10.79 4.21 10.21L9 15V16C9 17.1 10.34 18 12 18V19.93H11ZM17.92 17.38C17.43 16.14 16.36 15.26 15 15H14V13C14 12.45 13.55 12 13 12H8V10H10C10.55 10 11 9.55 11 9V7H13V9C13 10.1 12.1 11 11 11H10V12H13C14.1 12 15 12.9 15 14V15C16.05 15 16.96 15.35 17.65 15.94C18.44 14.77 19 13.44 19 12C19 8.13 15.69 5 12 5C11.66 5 11.32 5.04 11 5.1V4.07C15.94 4.56 19.56 8.83 19.93 14H19.94C19.52 15.48 18.84 16.78 17.92 17.38Z"
-                fill={isDark ? '#F7F8FA' : 'white'}
-              />
-            </Svg>
-          </LinearGradient>
-          <View className="items-center">
-            <Text
-              className={`text-2xl font-bold ${isDark ? 'text-app-light-grey' : 'text-header-text'}`}
+            <Image
+              source={require('../assets/icon.png')}
               style={{
-                letterSpacing: -0.5,
+                width: 160,
+                height: 160,
+                resizeMode: 'contain',
               }}
-            >
-              International Talent Connect
-            </Text>
+            />
           </View>
         </View>
       </Animated.View>
+
+      {/* Language Selection */}
+      {showLanguageSelection && (
+        <Animated.View
+          style={{
+            marginTop: 48,
+            width: '100%',
+            paddingHorizontal: 32,
+            opacity: fadeAnim,
+          }}
+        >
+          <Text
+            className="text-lg font-semibold mb-4 text-center text-white"
+            style={{ marginBottom: 24 }}
+          >
+            Select Language / زبان منتخب کریں
+          </Text>
+          <View style={{ gap: 16 }}>
+            <TouchableOpacity
+              onPress={() => handleLanguageSelect('en')}
+              activeOpacity={0.8}
+            >
+              <LinearGradient
+                colors={['#00C6A1', '#00B894']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={{
+                  borderRadius: 12,
+                  height: 56,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  shadowColor: '#00C6A1',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 6,
+                }}
+              >
+                <Text className="text-white text-lg font-bold">English</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleLanguageSelect('ur')}
+              activeOpacity={0.8}
+            >
+              <LinearGradient
+                colors={['#00C6A1', '#00B894']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={{
+                  borderRadius: 12,
+                  height: 56,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  shadowColor: '#00C6A1',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 6,
+                }}
+              >
+                <Text className="text-white text-lg font-bold">اردو</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
+      )}
     </View>
   );
 };

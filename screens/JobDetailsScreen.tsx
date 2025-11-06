@@ -3,6 +3,7 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../src/contexts/ThemeContext';
+import { useLanguage } from '../src/contexts/LanguageContext';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -10,6 +11,7 @@ export const JobDetailsScreen: React.FC = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const isDark = theme === 'dark';
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('Description');
@@ -106,12 +108,16 @@ export const JobDetailsScreen: React.FC = () => {
               isDark ? 'bg-black/20' : 'bg-gray-100'
             }`}
           >
-            {['Description', 'Requirements', 'About'].map((tab) => (
+            {[
+              { key: 'Description', label: t('job_description') },
+              { key: 'Requirements', label: t('requirements') },
+              { key: 'About', label: t('company_info') }
+            ].map((tab) => (
               <TouchableOpacity
-                key={tab}
-                onPress={() => setActiveTab(tab)}
+                key={tab.key}
+                onPress={() => setActiveTab(tab.key)}
                 className={`flex-1 items-center justify-center rounded-lg ${
-                  activeTab === tab
+                  activeTab === tab.key
                     ? isDark
                       ? 'bg-[#0B3047]'
                       : 'bg-white'
@@ -121,7 +127,7 @@ export const JobDetailsScreen: React.FC = () => {
               >
                 <Text
                   className={`text-sm font-semibold ${
-                    activeTab === tab
+                    activeTab === tab.key
                       ? isDark
                         ? 'text-white'
                         : 'text-navy'
@@ -130,7 +136,7 @@ export const JobDetailsScreen: React.FC = () => {
                       : 'text-gray-600'
                   }`}
                 >
-                  {tab}
+                  {tab.label}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -140,7 +146,7 @@ export const JobDetailsScreen: React.FC = () => {
         {/* Content */}
         <View className="px-6">
           <Text className={`text-xl font-bold mb-3 ${isDark ? 'text-white' : 'text-navy'}`}>
-            Job Description
+            {activeTab === 'Description' ? t('job_description') : activeTab === 'Requirements' ? t('requirements') : t('company_info')}
           </Text>
           <Text className={`text-base leading-6 mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
             We are looking for a passionate Senior Product Designer to join our dynamic team. You will
@@ -226,7 +232,7 @@ export const JobDetailsScreen: React.FC = () => {
               borderRadius: 12,
             }}
           />
-          <Text className="text-white text-lg font-bold">Apply Now</Text>
+          <Text className="text-white text-lg font-bold">{t('apply_now')}</Text>
         </TouchableOpacity>
       </View>
     </View>

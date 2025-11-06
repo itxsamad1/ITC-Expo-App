@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { 
   View, 
   Text, 
@@ -15,22 +15,44 @@ import { useTheme } from '../src/contexts/ThemeContext';
 import { useLanguage } from '../src/contexts/LanguageContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface SignUpScreenProps {
-  onSignUp: () => void;
+interface AuthScreenProps {
   onSignIn: () => void;
+  onSignUp: () => void;
 }
 
-export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }) => {
+type AuthMode = 'signin' | 'signup';
+
+export const AuthScreen: React.FC<AuthScreenProps> = ({ onSignIn, onSignUp }) => {
   const { theme } = useTheme();
   const { t } = useLanguage();
   const isDark = theme === 'dark';
   const insets = useSafeAreaInsets();
+  const [mode, setMode] = useState<AuthMode>('signin');
+  
+  // Form fields
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  
+  // Focus states
+  const [emailFocused, setEmailFocused] = useState<boolean>(false);
+  const [passwordFocused, setPasswordFocused] = useState<boolean>(false);
+  const [nameFocused, setNameFocused] = useState<boolean>(false);
+  const [confirmPasswordFocused, setConfirmPasswordFocused] = useState<boolean>(false);
+
+  const handleSignIn = useCallback(() => {
+    const validEmail = 'user@gmail.com';
+    const validPassword = '12345678';
+    
+    if (email.trim() === validEmail && password === validPassword) {
+      onSignIn();
+    } else {
+      Alert.alert('Error', 'Invalid email or password. Please try again.');
+    }
+  }, [email, password, onSignIn]);
 
   const handleSignUp = useCallback(() => {
     if (!name.trim() || !email.trim() || !password || !confirmPassword) {
@@ -48,15 +70,31 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
       return;
     }
 
-    // Success - proceed with sign up
     onSignUp();
   }, [name, email, password, confirmPassword, onSignUp]);
+
+  // Input container styles
+  const inputContainerStyle = useCallback((focused: boolean) => ({
+    borderRadius: 12,
+    height: 56,
+    paddingHorizontal: 16,
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    borderWidth: 1,
+    borderColor: focused ? '#00C6A1' : (isDark ? '#374151' : '#E5E7EB'),
+    backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
+    shadowColor: focused ? '#00C6A1' : 'transparent',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: focused ? 0.1 : 0,
+    shadowRadius: 4,
+    elevation: focused ? 2 : 0,
+  }), [isDark]);
 
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: isDark ? '#052639' : '#FFFFFF',
+        backgroundColor: isDark ? '#052639' : '#F9FAFB',
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
       }}
@@ -72,99 +110,115 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="always"
           keyboardDismissMode="on-drag"
-          nestedScrollEnabled={true}
         >
           <View style={{ width: '100%', maxWidth: 448, marginHorizontal: 'auto', paddingHorizontal: 24, paddingVertical: 32 }}>
-            {/* Logo */}
-            <View style={{ alignItems: 'center', marginBottom: 40 }}>
-              <LinearGradient
-                colors={['#00C6A1', '#052639']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={{
-                  width: 64,
-                  height: 64,
-                  borderRadius: 16,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  shadowColor: '#00C6A1',
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 0.3,
-                  shadowRadius: 8,
-                  elevation: 8,
-                }}
-              >
-                <Ionicons name="globe-outline" size={28} color="#ffffff" />
-              </LinearGradient>
-            </View>
-
-            {/* Welcome Text */}
+            {/* Title */}
             <Text
               style={{
-                fontSize: 32,
+                fontSize: 28,
                 fontWeight: 'bold',
-                lineHeight: 38,
-                textAlign: 'center',
-                marginBottom: 8,
-                letterSpacing: -0.5,
-                color: isDark ? '#FFFFFF' : '#052639',
-              }}
-            >
-              {t('create_account')}
-            </Text>
-            <Text
-              style={{
-                fontSize: 16,
                 textAlign: 'center',
                 marginBottom: 32,
-                color: isDark ? '#9CA3AF' : '#4B5563',
+                color: isDark ? '#FFFFFF' : '#052639',
+                letterSpacing: -0.5,
               }}
             >
-              {t('sign_up')} {t('continue') || 'to start your journey'}
+              International Talent Connect
             </Text>
 
-            {/* Name Input */}
-            <View style={{ marginBottom: 20 }}>
-              <Text
+            {/* Sign In / Sign Up Toggle */}
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
+                borderRadius: 12,
+                padding: 4,
+                marginBottom: 32,
+                borderWidth: 1,
+                borderColor: isDark ? '#374151' : '#E5E7EB',
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => setMode('signin')}
                 style={{
-                  fontSize: 14,
-                  fontWeight: '600',
-                  marginBottom: 10,
-                  color: isDark ? '#D1D5DB' : '#374151',
-                }}
-              >
-                {t('full_name')}
-              </Text>
-              <View
-                style={{
-                  borderRadius: 12,
-                  height: 56,
-                  paddingHorizontal: 16,
-                  flexDirection: 'row',
+                  flex: 1,
+                  paddingVertical: 12,
+                  borderRadius: 8,
+                  backgroundColor: mode === 'signin' ? '#00C6A1' : 'transparent',
                   alignItems: 'center',
-                  borderWidth: 1,
-                  borderColor: isDark ? '#374151' : '#E5E7EB',
-                  backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
+                  justifyContent: 'center',
                 }}
+                activeOpacity={0.8}
               >
-                <TextInput
+                <Text
                   style={{
-                    flex: 1,
                     fontSize: 16,
-                    color: isDark ? '#FFFFFF' : '#111827',
-                    padding: 0,
+                    fontWeight: 'bold',
+                    color: mode === 'signin' ? '#FFFFFF' : (isDark ? '#9CA3AF' : '#6B7280'),
                   }}
-                  placeholder={t('full_name')}
-                  placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
-                  value={name}
-                  onChangeText={setName}
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                />
-              </View>
+                >
+                  {t('sign_in')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setMode('signup')}
+                style={{
+                  flex: 1,
+                  paddingVertical: 12,
+                  borderRadius: 8,
+                  backgroundColor: mode === 'signup' ? '#00C6A1' : 'transparent',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                activeOpacity={0.8}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: mode === 'signup' ? '#FFFFFF' : (isDark ? '#9CA3AF' : '#6B7280'),
+                  }}
+                >
+                  {t('sign_up')}
+                </Text>
+              </TouchableOpacity>
             </View>
 
-            {/* Email Input */}
+            {/* Full Name Field (Sign Up only) */}
+            {mode === 'signup' && (
+              <View style={{ marginBottom: 20 }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: '600',
+                    marginBottom: 10,
+                    color: isDark ? '#D1D5DB' : '#374151',
+                  }}
+                >
+                  {t('full_name')}
+                </Text>
+                <View style={inputContainerStyle(nameFocused)}>
+                  <TextInput
+                    style={{
+                      flex: 1,
+                      fontSize: 16,
+                      color: isDark ? '#FFFFFF' : '#111827',
+                      padding: 0,
+                    }}
+                    placeholder="Enter your full name"
+                    placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
+                    value={name}
+                    onChangeText={setName}
+                    onFocus={() => setNameFocused(true)}
+                    onBlur={() => setNameFocused(false)}
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                  />
+                </View>
+              </View>
+            )}
+
+            {/* Email Field */}
             <View style={{ marginBottom: 20 }}>
               <Text
                 style={{
@@ -176,18 +230,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
               >
                 {t('email')}
               </Text>
-              <View
-                style={{
-                  borderRadius: 12,
-                  height: 56,
-                  paddingHorizontal: 16,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1,
-                  borderColor: isDark ? '#374151' : '#E5E7EB',
-                  backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
-                }}
-              >
+              <View style={inputContainerStyle(emailFocused)}>
                 <TextInput
                   style={{
                     flex: 1,
@@ -195,10 +238,12 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
                     color: isDark ? '#FFFFFF' : '#111827',
                     padding: 0,
                   }}
-                  placeholder={t('email')}
+                  placeholder="Enter your email address"
                   placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
                   value={email}
                   onChangeText={setEmail}
+                //   onFocus={() => setEmailFocused(true)}
+                //   onBlur={() => setEmailFocused(false)}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -206,8 +251,8 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
               </View>
             </View>
 
-            {/* Password Input */}
-            <View style={{ marginBottom: 20 }}>
+            {/* Password Field */}
+            <View style={{ marginBottom: mode === 'signin' ? 16 : 20 }}>
               <Text
                 style={{
                   fontSize: 14,
@@ -218,18 +263,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
               >
                 {t('password')}
               </Text>
-              <View
-                style={{
-                  borderRadius: 12,
-                  height: 56,
-                  paddingHorizontal: 16,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1,
-                  borderColor: isDark ? '#374151' : '#E5E7EB',
-                  backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
-                }}
-              >
+              <View style={inputContainerStyle(passwordFocused)}>
                 <TextInput
                   style={{
                     flex: 1,
@@ -237,10 +271,12 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
                     color: isDark ? '#FFFFFF' : '#111827',
                     padding: 0,
                   }}
-                  placeholder={t('password')}
+                  placeholder="Enter your password"
                   placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
                   value={password}
                   onChangeText={setPassword}
+                //   onFocus={() => setPasswordFocused(true)}
+                //   onBlur={() => setPasswordFocused(false)}
                   secureTextEntry={!showPassword}
                 />
                 <TouchableOpacity 
@@ -253,56 +289,58 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
               </View>
             </View>
 
-            {/* Confirm Password Input */}
-            <View style={{ marginBottom: 24 }}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: '600',
-                  marginBottom: 10,
-                  color: isDark ? '#D1D5DB' : '#374151',
-                }}
-              >
-                {t('confirm_password')}
-              </Text>
-              <View
-                style={{
-                  borderRadius: 12,
-                  height: 56,
-                  paddingHorizontal: 16,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  borderWidth: 1,
-                  borderColor: isDark ? '#374151' : '#E5E7EB',
-                  backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
-                }}
-              >
-                <TextInput
+            {/* Confirm Password Field (Sign Up only) */}
+            {mode === 'signup' && (
+              <View style={{ marginBottom: 24 }}>
+                <Text
                   style={{
-                    flex: 1,
-                    fontSize: 16,
-                    color: isDark ? '#FFFFFF' : '#111827',
-                    padding: 0,
+                    fontSize: 14,
+                    fontWeight: '600',
+                    marginBottom: 10,
+                    color: isDark ? '#D1D5DB' : '#374151',
                   }}
-                  placeholder={t('confirm_password')}
-                  placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
-                  secureTextEntry={!showConfirmPassword}
-                />
-                <TouchableOpacity 
-                  onPress={() => setShowConfirmPassword(!showConfirmPassword)} 
-                  style={{ marginLeft: 12, padding: 8 }}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
-                  <Ionicons name={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'} size={22} color={isDark ? '#9CA3AF' : '#6B7280'} />
-                </TouchableOpacity>
+                  {t('confirm_password')}
+                </Text>
+                <View style={inputContainerStyle(confirmPasswordFocused)}>
+                  <TextInput
+                    style={{
+                      flex: 1,
+                      fontSize: 16,
+                      color: isDark ? '#FFFFFF' : '#111827',
+                      padding: 0,
+                    }}
+                    placeholder="Confirm your password"
+                    placeholderTextColor={isDark ? '#6B7280' : '#9CA3AF'}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    onFocus={() => setConfirmPasswordFocused(true)}
+                    onBlur={() => setConfirmPasswordFocused(false)}
+                    secureTextEntry={!showConfirmPassword}
+                  />
+                  <TouchableOpacity 
+                    onPress={() => setShowConfirmPassword(!showConfirmPassword)} 
+                    style={{ marginLeft: 12, padding: 8 }}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  >
+                    <Ionicons name={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'} size={22} color={isDark ? '#9CA3AF' : '#6B7280'} />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
+            )}
 
-            {/* Sign Up Button */}
+            {/* Forgot Password (Sign In only) */}
+            {mode === 'signin' && (
+              <TouchableOpacity style={{ alignItems: 'flex-end', marginBottom: 24 }}>
+                <Text style={{ color: '#00C6A1', fontSize: 14, fontWeight: '600' }}>
+                  {t('forgot_password')}
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {/* Primary Action Button */}
             <TouchableOpacity
-              onPress={handleSignUp}
+              onPress={mode === 'signin' ? handleSignIn : handleSignUp}
               style={{ marginBottom: 24 }}
               activeOpacity={0.9}
             >
@@ -311,7 +349,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={{
-                  borderRadius: 9999,
+                  borderRadius: 12,
                   height: 56,
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -323,7 +361,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
                 }}
               >
                 <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>
-                  Sign Up
+                  {mode === 'signin' ? t('sign_in') : t('create_account')}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -332,46 +370,13 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 24 }}>
               <View style={{ flex: 1, height: 1, backgroundColor: isDark ? '#374151' : '#E5E7EB' }} />
               <Text style={{ paddingHorizontal: 16, fontSize: 14, color: isDark ? '#9CA3AF' : '#6B7280' }}>
-                or continue with
+                {t('or_continue_with')}
               </Text>
               <View style={{ flex: 1, height: 1, backgroundColor: isDark ? '#374151' : '#E5E7EB' }} />
             </View>
 
             {/* Social Login Buttons */}
             <View style={{ gap: 12 }}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: 56,
-                  paddingHorizontal: 20,
-                  borderRadius: 12,
-                  borderWidth: 1,
-                  borderColor: isDark ? '#374151' : '#E5E7EB',
-                  backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.05,
-                  shadowRadius: 2,
-                  elevation: 2,
-                }}
-                activeOpacity={0.7}
-              >
-                <View style={{ width: 24, height: 24, marginRight: 12, alignItems: 'center', justifyContent: 'center' }}>
-                  <MaterialCommunityIcons name="google" size={24} color="#4285F4" />
-                </View>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: '500',
-                    color: isDark ? '#FFFFFF' : '#111827',
-                  }}
-                >
-                  Sign up with Google
-                </Text>
-              </TouchableOpacity>
-
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -401,19 +406,42 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onSignIn }
                     color: isDark ? '#FFFFFF' : '#111827',
                   }}
                 >
-                  {t('sign_up_with_linkedin')}
+                  {mode === 'signin' ? t('sign_in_with_linkedin') : t('sign_up_with_linkedin')}
                 </Text>
               </TouchableOpacity>
-            </View>
 
-            {/* Sign In Link */}
-            <View style={{ alignItems: 'center', marginTop: 32 }}>
-              <Text style={{ fontSize: 14, color: isDark ? '#9CA3AF' : '#4B5563' }}>
-                {t('already_have_account')}{' '}
-                <Text style={{ fontWeight: '600', color: '#00C6A1' }} onPress={onSignIn}>
-                  {t('sign_in')}
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 56,
+                  paddingHorizontal: 20,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: isDark ? '#374151' : '#E5E7EB',
+                  backgroundColor: isDark ? '#0A2E44' : '#FFFFFF',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.05,
+                  shadowRadius: 2,
+                  elevation: 2,
+                }}
+                activeOpacity={0.7}
+              >
+                <View style={{ width: 24, height: 24, marginRight: 12, alignItems: 'center', justifyContent: 'center' }}>
+                  <MaterialCommunityIcons name="google" size={24} color="#4285F4" />
+                </View>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: '500',
+                    color: isDark ? '#FFFFFF' : '#111827',
+                  }}
+                >
+                  {mode === 'signin' ? t('sign_in_with_google') : t('sign_up_with_google')}
                 </Text>
-              </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
