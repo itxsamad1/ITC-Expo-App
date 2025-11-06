@@ -244,7 +244,7 @@ This project is private and not licensed for public use.
 
 ## 📞 Support
 
-For support, email [your-email] or open an issue on GitHub.
+For support, email [itxsamad@icloud.com] or open an issue on GitHub.
 
 ---
 
