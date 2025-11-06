@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../src/contexts/ThemeContext';
@@ -141,6 +142,7 @@ export const ExploreJobsScreen: React.FC = () => {
   const router = useRouter();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const insets = useSafeAreaInsets();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const tabHeight = useBottomTabBarHeight();
   const dynamicHeight = tabHeight * 0.6; // ~60% of tab height (adjust as needed)
@@ -151,7 +153,7 @@ export const ExploreJobsScreen: React.FC = () => {
     : jobs.filter(job => job.category === selectedCategory);
 
   return (
-    <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-background-light'}`}>
+    <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-background-light'}`} style={{ paddingTop: insets.top }}>
       {/* Header */}
       <View
         style={{

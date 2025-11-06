@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../src/contexts/ThemeContext';
@@ -9,6 +10,7 @@ export const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const insets = useSafeAreaInsets();
 
   const upcomingEvents = [
     {
@@ -35,7 +37,7 @@ export const HomeScreen: React.FC = () => {
   ];
 
   return (
-    <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-background-light'}`}>
+    <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-background-light'}`} style={{ paddingTop: insets.top }}>
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View className={`px-6 pt-4 pb-3 ${isDark ? 'bg-background-dark' : 'bg-white'}`}>

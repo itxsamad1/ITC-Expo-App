@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../src/contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -47,10 +48,11 @@ const onboardingData = [
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onGetStarted }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const insets = useSafeAreaInsets();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-white'}`}>
+    <View className={`flex-1 ${isDark ? 'bg-background-dark' : 'bg-white'}`} style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <ScrollView
         horizontal
         pagingEnabled

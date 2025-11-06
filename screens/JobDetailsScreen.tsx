@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTheme } from '../src/contexts/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,10 +11,11 @@ export const JobDetailsScreen: React.FC = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('Description');
 
   return (
-    <View className={`flex-1 ${isDark ? 'bg-navy' : 'bg-white'}`}>
+    <View className={`flex-1 ${isDark ? 'bg-navy' : 'bg-white'}`} style={{ paddingTop: insets.top }}>
       {/* Header */}
       <View
         style={{

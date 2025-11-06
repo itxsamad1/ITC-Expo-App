@@ -9,6 +9,7 @@ import {
   Platform,
   Alert
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../src/contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -21,6 +22,7 @@ interface SignInScreenProps {
 export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const insets = useSafeAreaInsets();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -106,6 +108,8 @@ export const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onSignUp }
       style={{
         flex: 1,
         backgroundColor: isDark ? '#052639' : '#FFFFFF',
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
       }}
     >
       <KeyboardAvoidingView
