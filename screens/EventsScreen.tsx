@@ -63,6 +63,8 @@ export const EventsScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -74,6 +76,8 @@ export const EventsScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="search-outline" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -83,20 +87,38 @@ export const EventsScreen: React.FC = () => {
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* Calendar */}
         <View className="px-6 py-6">
-          <View className="bg-white rounded-2xl p-4">
+          <View 
+            className={`rounded-2xl p-4 ${isDark ? 'bg-[#0A2F47]' : 'bg-white'}`}
+            style={{
+              borderWidth: 1,
+              borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
+            }}
+          >
             <View className="flex-row items-center justify-between mb-4">
-              <TouchableOpacity className="w-10 h-10 items-center justify-center rounded-full bg-gray-100">
-                <Ionicons name="chevron-back" size={18} color="#111827" />
+              <TouchableOpacity 
+                className={`w-10 h-10 items-center justify-center rounded-full ${isDark ? 'bg-[#0F3E5E]' : 'bg-gray-100'}`}
+                style={{
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
+                }}
+              >
+                <Ionicons name="chevron-back" size={18} color={isDark ? '#fff' : '#111827'} />
               </TouchableOpacity>
-              <Text className="text-lg font-bold text-gray-900">December 2023</Text>
-              <TouchableOpacity className="w-10 h-10 items-center justify-center rounded-full bg-gray-100">
-                <Ionicons name="chevron-forward" size={18} color="#111827" />
+              <Text className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>December 2023</Text>
+              <TouchableOpacity 
+                className={`w-10 h-10 items-center justify-center rounded-full ${isDark ? 'bg-[#0F3E5E]' : 'bg-gray-100'}`}
+                style={{
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
+                }}
+              >
+                <Ionicons name="chevron-forward" size={18} color={isDark ? '#fff' : '#111827'} />
               </TouchableOpacity>
             </View>
             <View className="flex-row flex-wrap">
               {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
                 <View key={index} style={{ width: '14.28%', height: 48, alignItems: 'center', justifyContent: 'center' }}>
-                  <Text className="text-xs font-bold text-gray-500">{day}</Text>
+                  <Text className={`text-xs font-bold ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{day}</Text>
                 </View>
               ))}
               {Array.from({ length: 5 }).map((_, i) => (
@@ -116,7 +138,7 @@ export const EventsScreen: React.FC = () => {
                 >
                   <Text
                     className={`text-sm font-medium ${
-                      day === selectedDay ? 'text-white font-bold' : 'text-gray-700'
+                      day === selectedDay ? 'text-white font-bold' : (isDark ? 'text-gray-300' : 'text-gray-700')
                     }`}
                   >
                     {day}
@@ -141,6 +163,8 @@ export const EventsScreen: React.FC = () => {
                   isDark ? 'bg-[#0A2F47]' : 'bg-white'
                 }`}
                 style={{
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
                   shadowColor: '#000',
                   shadowOffset: { width: 0, height: 2 },
                   shadowOpacity: 0.1,
@@ -170,6 +194,10 @@ export const EventsScreen: React.FC = () => {
                   <TouchableOpacity
                     className="rounded-xl h-11 items-center justify-center bg-primary"
                     activeOpacity={0.9}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: 'rgba(255,255,255,0.2)',
+                    }}
                   >
                     <Text className="text-white text-sm font-bold">Register</Text>
                   </TouchableOpacity>

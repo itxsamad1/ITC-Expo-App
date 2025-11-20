@@ -65,6 +65,8 @@ export const TrainingScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -76,6 +78,8 @@ export const TrainingScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="search-outline" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -96,6 +100,8 @@ export const TrainingScreen: React.FC = () => {
                   isDark ? 'bg-[#0A2F47]' : 'bg-white'
                 }`}
                 style={{
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
                   shadowColor: '#000',
                   shadowOffset: { width: 0, height: 2 },
                   shadowOpacity: 0.1,
@@ -128,6 +134,10 @@ export const TrainingScreen: React.FC = () => {
                   <TouchableOpacity
                     className="rounded-xl h-11 items-center justify-center bg-primary"
                     activeOpacity={0.9}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: 'rgba(255,255,255,0.2)',
+                    }}
                   >
                     <Text className="text-white text-sm font-bold">{t('register')}</Text>
                   </TouchableOpacity>

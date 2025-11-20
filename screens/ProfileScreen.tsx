@@ -79,6 +79,8 @@ export const ProfileScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -94,6 +96,8 @@ export const ProfileScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="ellipsis-vertical" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -158,6 +162,8 @@ export const ProfileScreen: React.FC = () => {
                 }`}
                 activeOpacity={0.8}
                 style={{
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
                   shadowColor: '#000',
                   shadowOffset: { width: 0, height: 2 },
                   shadowOpacity: 0.05,
@@ -174,6 +180,8 @@ export const ProfileScreen: React.FC = () => {
                     justifyContent: 'center',
                     marginRight: 16,
                     backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
+                    borderWidth: 1,
+                    borderColor: isDark ? 'rgba(0,198,161,0.3)' : 'rgba(0,198,161,0.2)',
                   }}
                 >
                   <Ionicons name={item.icon as any} size={22} color="#00C6A1" />
@@ -205,6 +213,8 @@ export const ProfileScreen: React.FC = () => {
                 padding: 16,
                 borderRadius: 16,
                 backgroundColor: isDark ? '#0a2e46' : '#FFFFFF',
+                borderWidth: 1,
+                borderColor: isDark ? 'rgba(239,68,68,0.3)' : '#FEE2E2',
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.05,

@@ -113,6 +113,8 @@ export const NotificationsScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -134,13 +136,15 @@ export const NotificationsScreen: React.FC = () => {
               }`}
               activeOpacity={0.8}
               style={{
+                borderWidth: 1,
+                borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
+                borderLeftWidth: notification.isRead ? 1 : 4,
+                borderLeftColor: notification.isRead ? (isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB') : '#00C6A1',
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.08,
                 shadowRadius: 8,
                 elevation: 3,
-                borderLeftWidth: notification.isRead ? 0 : 4,
-                borderLeftColor: notification.isRead ? 'transparent' : '#00C6A1',
               }}
             >
               <View style={{ marginRight: 12, paddingTop: 4 }}>
@@ -165,6 +169,8 @@ export const NotificationsScreen: React.FC = () => {
                   className="w-12 h-12 rounded-xl items-center justify-center"
                   style={{
                     backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
+                    borderWidth: 1,
+                    borderColor: isDark ? 'rgba(0,198,161,0.3)' : 'rgba(0,198,161,0.2)',
                   }}
                 >
                   {notification.type === 'driver' && <Ionicons name="car-outline" size={22} color="#00C6A1" />}

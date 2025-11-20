@@ -40,6 +40,8 @@ export const JobDetailsScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -51,6 +53,8 @@ export const JobDetailsScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="bookmark-outline" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -64,6 +68,8 @@ export const JobDetailsScreen: React.FC = () => {
             isDark ? 'bg-[#0A2F47]' : 'bg-gray-50'
           }`}
           style={{
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.05,
@@ -76,7 +82,7 @@ export const JobDetailsScreen: React.FC = () => {
               uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAXGD8O6pZg8iLTgl-OuDCDqX4WsyCRyiylrZPDXiBHa8w4ce10VWxODPiOI7xsfsHUGDMWel1m1DZL29gBqrOOw4c5XSs-416pVfPwZyYuAM7k-nQ1UzjonIaRe-GiaU2RQAU6lXzXABkk9Le0gp1efAoWeF7jvMhbQ3k4VN_2TVhOw77wnfEa5p3ecTTbBjXn_f2kEyoqY5pWYbUCIsXB_ErkRVTLfVu5YXZYvSowxrDm95_Cpg-YlhDVr7Awx4ShwqXTDptVnmE',
             }}
             className="w-16 h-16 rounded-xl"
-            style={{ borderWidth: 1, borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#E5E7EB' }}
+            style={{ borderWidth: 1.5, borderColor: isDark ? 'rgba(255,255,255,0.2)' : '#D1D5DB' }}
           />
           <View className="flex-1 ml-4">
             <Text className={`text-lg font-bold mb-1 ${isDark ? 'text-white' : 'text-navy'}`}>
@@ -107,6 +113,10 @@ export const JobDetailsScreen: React.FC = () => {
             className={`flex-row h-12 rounded-xl p-1 ${
               isDark ? 'bg-black/20' : 'bg-gray-100'
             }`}
+            style={{
+              borderWidth: 1,
+              borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
+            }}
           >
             {[
               { key: 'Description', label: t('job_description') },
@@ -177,8 +187,12 @@ export const JobDetailsScreen: React.FC = () => {
           {/* Visa & Language Card */}
           <View
             className={`mt-6 p-5 rounded-2xl ${
-              isDark ? 'bg-[#0B3047] border border-white/10' : 'bg-teal-50 border border-teal-100'
+              isDark ? 'bg-[#0B3047]' : 'bg-teal-50'
             }`}
+            style={{
+              borderWidth: 1.5,
+              borderColor: isDark ? 'rgba(0,198,161,0.3)' : '#B2F5EA',
+            }}
           >
             <View className="flex-row items-center mb-3">
               <Ionicons name="language-outline" size={20} color={isDark ? '#00C6A1' : '#00C6A1'} style={{ marginRight: 8 }} />

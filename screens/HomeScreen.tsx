@@ -42,6 +42,8 @@ export const HomeScreen: React.FC = () => {
               className="w-10 h-10 items-center justify-center rounded-full"
               style={{
                 backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+                borderWidth: 1,
+                borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
               }}
             >
               <Ionicons name="notifications-outline" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -54,6 +56,8 @@ export const HomeScreen: React.FC = () => {
               isDark ? 'bg-[#0A2E44]' : 'bg-gray-50'
             }`}
             style={{
+              borderWidth: 1,
+              borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.05,
@@ -100,6 +104,8 @@ export const HomeScreen: React.FC = () => {
                     width: 144,
                     height: 128,
                     justifyContent: 'space-between',
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,0.2)',
                     shadowColor: '#00C6A1',
                     shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.2,

@@ -37,6 +37,8 @@ export const SettingsScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -54,6 +56,8 @@ export const SettingsScreen: React.FC = () => {
             isDark ? 'bg-[#0A2F47]' : 'bg-white'
           }`}
           style={{
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.05,
@@ -85,6 +89,8 @@ export const SettingsScreen: React.FC = () => {
                   justifyContent: 'center',
                   marginRight: 16,
                   backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(0,198,161,0.3)' : 'rgba(0,198,161,0.2)',
                 }}
               >
                 <Ionicons 
@@ -118,6 +124,8 @@ export const SettingsScreen: React.FC = () => {
             isDark ? 'bg-[#0A2F47]' : 'bg-white'
           }`}
           style={{
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.05,
@@ -140,6 +148,8 @@ export const SettingsScreen: React.FC = () => {
               borderRadius: 8,
               marginBottom: 8,
               backgroundColor: language === 'en' ? (isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)') : 'transparent',
+              borderWidth: 1,
+              borderColor: language === 'en' ? (isDark ? 'rgba(0,198,161,0.3)' : 'rgba(0,198,161,0.2)') : (isDark ? 'rgba(255,255,255,0.1)' : '#E5E7EB'),
             }}
             activeOpacity={0.7}
           >
@@ -153,6 +163,8 @@ export const SettingsScreen: React.FC = () => {
                   justifyContent: 'center',
                   marginRight: 16,
                   backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(0,198,161,0.3)' : 'rgba(0,198,161,0.2)',
                 }}
               >
                 <Ionicons 
@@ -185,6 +197,8 @@ export const SettingsScreen: React.FC = () => {
               paddingHorizontal: 4,
               borderRadius: 8,
               backgroundColor: language === 'ur' ? (isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)') : 'transparent',
+              borderWidth: 1,
+              borderColor: language === 'ur' ? (isDark ? 'rgba(0,198,161,0.3)' : 'rgba(0,198,161,0.2)') : (isDark ? 'rgba(255,255,255,0.1)' : '#E5E7EB'),
             }}
             activeOpacity={0.7}
           >
@@ -198,6 +212,8 @@ export const SettingsScreen: React.FC = () => {
                   justifyContent: 'center',
                   marginRight: 16,
                   backgroundColor: isDark ? 'rgba(0,198,161,0.2)' : 'rgba(0,198,161,0.1)',
+                  borderWidth: 1,
+                  borderColor: isDark ? 'rgba(0,198,161,0.3)' : 'rgba(0,198,161,0.2)',
                 }}
               >
                 <Ionicons 
@@ -227,6 +243,8 @@ export const SettingsScreen: React.FC = () => {
             isDark ? 'bg-[#0A2F47]' : 'bg-white'
           }`}
           style={{
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.05,

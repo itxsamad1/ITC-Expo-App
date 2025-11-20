@@ -240,6 +240,8 @@ export const ExploreJobsScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="chevron-back" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -255,6 +257,8 @@ export const ExploreJobsScreen: React.FC = () => {
           className="w-10 h-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#F3F4F6',
+            borderWidth: 1,
+            borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
           }}
         >
           <Ionicons name="search-outline" size={20} color={isDark ? '#fff' : '#111827'} />
@@ -294,6 +298,13 @@ export const ExploreJobsScreen: React.FC = () => {
             height: dynamicHeight * 0.7,
             justifyContent: 'center',
             alignItems: 'center',
+            borderWidth: 1,
+            borderColor:
+              selectedCategory === category.key
+                ? '#00C6A1'
+                : isDark
+                ? 'rgba(255,255,255,0.15)'
+                : '#E5E7EB',
           }}
         >
           <Text
@@ -337,6 +348,8 @@ export const ExploreJobsScreen: React.FC = () => {
               }`}
               activeOpacity={0.9}
               style={{
+                borderWidth: 1,
+                borderColor: isDark ? 'rgba(255,255,255,0.15)' : '#E5E7EB',
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.1,
@@ -348,7 +361,7 @@ export const ExploreJobsScreen: React.FC = () => {
                 <Image
                   source={{ uri: job.logo }}
                   className="w-14 h-14 rounded-xl"
-                  style={{ borderWidth: 1, borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#E5E7EB' }}
+                  style={{ borderWidth: 1.5, borderColor: isDark ? 'rgba(255,255,255,0.2)' : '#D1D5DB' }}
                 />
                 <View className="flex-1 ml-4">
                   <Text
@@ -373,6 +386,10 @@ export const ExploreJobsScreen: React.FC = () => {
               <TouchableOpacity
                 className="rounded-xl h-11 items-center justify-center bg-primary"
                 activeOpacity={0.9}
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'rgba(255,255,255,0.2)',
+                }}
               >
                 <Text className="text-white text-sm font-bold">{t('apply')}</Text>
               </TouchableOpacity>
