@@ -10,8 +10,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Menu items will be translated in the component
 const menuItems = [
   { id: 1, titleKey: 'my_applications', icon: 'send-outline', badge: '3', route: '/(tabs)/jobs' },
-  { id: 2, titleKey: 'saved_jobs', icon: 'bookmark-outline', route: '/(tabs)/jobs' },
-  { id: 3, titleKey: 'settings', icon: 'settings-outline', route: '/settings' },
+  { id: 2, titleKey: 'application_status', icon: 'time-outline', route: '/application-status' },
+  { id: 3, titleKey: 'document_upload', icon: 'document-attach-outline', route: '/document-upload' },
+  { id: 4, titleKey: 'visa_timeline', icon: 'calendar-outline', route: '/visa-timeline' },
+  { id: 5, titleKey: 'salary_calculator', icon: 'calculator-outline', route: '/salary-calculator' },
+  { id: 6, titleKey: 'cost_breakdown', icon: 'receipt-outline', route: '/cost-breakdown' },
+  { id: 7, titleKey: 'faqs', icon: 'help-circle-outline', route: '/faqs' },
+  { id: 8, titleKey: 'support', icon: 'headset-outline', route: '/support' },
+  { id: 9, titleKey: 'saved_jobs', icon: 'bookmark-outline', route: '/(tabs)/jobs' },
+  { id: 10, titleKey: 'settings', icon: 'settings-outline', route: '/settings' },
 ];
 
 const AUTH_STORAGE_KEY = '@itc_app:auth_state';

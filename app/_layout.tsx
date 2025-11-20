@@ -19,6 +19,14 @@ export default function RootLayout() {
             <Stack.Screen name="resources" />
             <Stack.Screen name="settings" />
             <Stack.Screen name="sign-up" />
+            <Stack.Screen name="eligibility-checker" />
+            <Stack.Screen name="application-status" />
+            <Stack.Screen name="document-upload" />
+            <Stack.Screen name="visa-timeline" />
+            <Stack.Screen name="salary-calculator" />
+            <Stack.Screen name="cost-breakdown" />
+            <Stack.Screen name="faqs" />
+            <Stack.Screen name="support" />
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>
