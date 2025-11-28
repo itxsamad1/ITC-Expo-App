@@ -136,9 +136,47 @@ export const HomeScreen: React.FC = () => {
           >
             <View className="flex-row items-center justify-between">
               <View className="flex-1">
-                <Text className="text-white text-2xl font-bold mb-2">
-                  {t('earn_monthly')}
-                </Text>
+                {language === 'en' ? (
+                  <View className="mb-2">
+                    <Text className="text-white text-xl font-bold">
+                      Earn Monthly Upto
+                    </Text>
+                    <Text 
+                      style={{
+                        fontSize: 32,
+                        fontWeight: '700',
+                        color: '#FFFFFF',
+                        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                        textShadowOffset: { width: 0, height: 2 },
+                        textShadowRadius: 4,
+                        letterSpacing: 0.5,
+                        marginTop: 4,
+                      }}
+                    >
+                      $1,400 - $4,000
+                    </Text>
+                  </View>
+                ) : (
+                  <View className="mb-2">
+                    <Text className="text-white text-xl font-bold">
+                      ماہانہ کمائیں تک
+                    </Text>
+                    <Text 
+                      style={{
+                        fontSize: 32,
+                        fontWeight: '700',
+                        color: '#FFFFFF',
+                        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                        textShadowOffset: { width: 0, height: 2 },
+                        textShadowRadius: 4,
+                        letterSpacing: 0.5,
+                        marginTop: 4,
+                      }}
+                    >
+                      $1,400 - $4,000
+                    </Text>
+                  </View>
+                )}
                 <Text className="text-white/90 text-base mb-4">
                   {t('earn_monthly_subtitle')}
                 </Text>

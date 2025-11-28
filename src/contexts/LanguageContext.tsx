@@ -129,7 +129,7 @@ const translations: Record<Language, Record<string, string>> = {
     'cancel': 'Cancel',
     
     // Advertising
-    'earn_monthly': 'Earn $1,400 - $2,000 Monthly',
+    'earn_monthly': 'Earn $1,400 - $4,000 Monthly',
     'earn_monthly_subtitle': 'Start Your Journey Today',
     'unlock_opportunity': 'Unlock Your Opportunity',
     'apply_now_cta': 'Apply Now & Transform Your Future',
@@ -474,7 +474,7 @@ const translations: Record<Language, Record<string, string>> = {
     'sign_up_to_start': 'اپنا سفر شروع کرنے کے لیے سائن اپ کریں',
     
     // Advertising
-    'earn_monthly': 'ماہانہ $1,400 - $2,000 کمائیں',
+    'earn_monthly': 'ماہانہ $1,400 - $4,000 کمائیں',
     'earn_monthly_subtitle': 'آج ہی چیک جمہوریہ کا سفر شروع کریں',
     'unlock_opportunity': 'اپنا موقع کھولیں',
     'apply_now_cta': 'ابھی درخواست دیں اور اپنا مستقبل بدلیں',
